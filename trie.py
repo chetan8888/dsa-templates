@@ -28,8 +28,20 @@ class Trie:
             t = t[letter]
         return True
 
-a = ['oa','oaa','ab']
+    def deleteWord(self,word,index,t):
+        if len(word) == index:
+            del t['#']
+            return
+
+        self.deleteWord(word,index+1,t[word[index]])
+        if len(t[word[index]].keys())==0:
+            del t[word[index]]
+
+
+a = ['flower', 'fly', 'few', 'feww']
 trie = Trie()
 for word in a:
     trie.insert(word)
+print(trie.t)
+trie.deleteWord('few',0,trie.t)
 print(trie.t)
