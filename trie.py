@@ -32,4 +32,4 @@ a = ['oa','oaa','ab']
 trie = Trie()
 for word in a:
     trie.insert(word)
-print(trie.startswith("o"))
+print(trie.t)
