@@ -2,6 +2,12 @@
 # edges => 3:[[0,1],[3,2]] 5:[[1,2]] there are three edges, two of weight 3 between 0,1 and 2,3 and one of 5 between 1,2
 # returns an array [[a,b,c],[d,e,f]] where a is edge weight between b,c
 
+# Kruskal's algorithm
+# 1. Sort all the edges in non-decreasing order of their weight.
+# 2. Pick the smallest edge. Check if it forms a cycle with the spanning tree formed so far.
+#    If cycle is not formed, include this edge. Else, discard it.
+# 3. Repeat step#2 until there are (V-1) edges in the spanning tree.
+
 def find_parent(x,parent):
     if x == parent[x]:
         return x
@@ -32,10 +38,10 @@ def find_mst(edges,n):
     parent = [i for i in range(n)]
 
     for weight in weights:
-        for pair in edges[weight]:
-            if find_parent(pair[0],parent) != find_parent(pair[1],parent):
-                union(pair[0],pair[1],rank,parent)
-                mst.append([weight,pair[0],pair[1]])
+        for a,b in edges[weight]:
+            if find_parent(a,parent) != find_parent(b,parent):
+                union(a,b,rank,parent)
+                mst.append([weight,a,b])
     return mst
 
 edges = {}

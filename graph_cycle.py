@@ -1,10 +1,12 @@
 from collections import deque
 
-# use bfs
+# BFS
+# States: -1: unvisited, 0: in Queue, 1: processed
 def undirected_cycle(adj):
     visited = [-1 for i in range(len(adj))]
     q = deque()
     q.append(0)
+    visited[0] = 0
     while (len(q)):
         visited[q[0]]= 1
         for i in adj[q[0]]:
@@ -16,7 +18,8 @@ def undirected_cycle(adj):
         q.popleft()
     return False
 
-
+# DFS
+# States: -1: unvisited, 0: in Stack, 1: processed
 def explore(i,visited,adj):
     visited[i] = 0
     for j in adj[i]:

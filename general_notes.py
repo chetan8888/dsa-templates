@@ -40,3 +40,5 @@
 # dic[tuple(arr)] = value
 
 # always use while not pq.empty() for PriorityQueue, while pq: will always be true
+
+# For a 2d matrix, simply starting from the leftmost cell and traversing the right and down edges will cover all the edges. This is particulkarly useful when you need the model the matrix as an undirected graph.
