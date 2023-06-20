@@ -3,11 +3,16 @@ import math
 
 # For DAG use simple BFS to find shortest distance (O(V+E))
 
+# Djikstra Algorithm (O((V+E)logV)).
+# finds shortest path from source to all other nodes
+# Practical Uses: Network Routing Protocols, Biology (spread of viruses among humans)
+
+# GREEDY
 # graph => 1:[[0,2],[3,4]]   1 has 2 neighbors 0 and 3 at distances 2 and 4
 # Djikstra works only for positive edges. For negative edges use Bellman Ford
 # O((V+E)logV)
 
-def find_min_distance(graph,source,target,n):
+def djikstra(graph,source,target,n):
     dist = [9999999 for i in range(n)]
     pq = PriorityQueue()
     dist[source] = 0
@@ -26,20 +31,30 @@ graph[0] = [[1,1],[3,10]]
 graph[1] = [[2,2]]
 graph[2] = [[3,4]]
 graph[3] = []
-print(find_min_distance(graph,0,3,4))
+print(djikstra(graph,0,3,4))
 
 
 # Bellman Ford (O(V*E))
+# Dynamic Programming
 # https://www.geeksforgeeks.org/bellman-ford-algorithm-dp-23/
 # Be careful of negative cycles
+
+# The idea is, assuming that there is no negative weight cycle if we have calculated shortest paths with at most i edges, then an iteration over all edges guarantees to give the shortest path with at-most (i+1) edges. Dynamic Programming Optimum Substructure property.
 
 def bellmanFord(edges, n, source):
     dist = [math.inf for i in range(n)]
     dist[source] = 0
 
+    # There can be maximum |V| – 1 edges in any simple path, that is why the outer loop runs |v| – 1 times. 
     for i in range(n-1):
         for u,v,w in edges:
             dist[v] = min(dist[v], dist[u]+w)
+    
+    # To detect a negative cycle, simply check if an additional iteration of outer loop does any update or not. If we get a shorter path, then there is a negative cycle.
+    for u,v,w in edges:
+        if dist[v] < dist[u]+w:
+            print("Graph Contains Negative Cycle")
+            break
     return dist
 
 edges = []
@@ -53,13 +68,13 @@ edges.append([3, 1, 1])
 edges.append([4, 3, -3])
 print(bellmanFord(edges,5,0))
 
+# Dijkstra and Bellman Ford algorithms finds min distance from a source to all other nodes
+# Floyd Warshall algorithm finds min distance between all pairs of nodes 
 
 # Floyd Marshall (O(V^3))
 # https://www.youtube.com/watch?v=4NQ3HnhyNfQ&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=21&ab_channel=WilliamFiset
 # https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/
-# Dijkstra and Bellman Ford algorithms finds min distance from a source to all other nodes
-# Floyd Warshall algorithm finds min distance between all pairs of nodes 
-
+# Dynamic Programming, Optimum Substructure. Taking each vertext as an intermediate vertex, we can find shortest path between any two vertices. If the optimum path between i and j contains a vertex k, then this optimum path is the combination of optimum path from i to k and optimum path from k to j.
 
 def floydMarshall(graph):
     n = len(graph)
