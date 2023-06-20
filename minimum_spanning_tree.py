@@ -56,3 +56,46 @@ edges[10] = [[5,4]]
 edges[11] = [[1,7]]
 edges[14] = [[3,5]]
 print(find_mst(edges,9))
+
+
+
+# Prim's algorithm
+# 1. Create a set mstSet that keeps track of vertices already included in MST.
+# 2. Start with any vertex and add it to mstSet. Also, add all edges from this vertex to a priority queue.
+# 3. Keep picking edges from priority queue and if the edge picked is not in mstSet, add it to mstSet and add all its adjacent edges to the priority queue.
+# 4. Repeat step#3 until there are (V-1) edges in the spanning tree.
+
+# Graph = {
+#     0: {
+#         1: 3,
+#         4: 5
+#     },
+#     1: {
+#         ...
+#     }
+# }
+
+# 0 has 2 neighbors, 1 and 4, with weights 3 and 5 respectively
+
+from queue import PriorityQueue
+def prims(graph, n):
+    mstSet = set()
+    pq = PriorityQueue()
+    pq.put((0, 0, 0))
+    mst = []
+
+    while len(mst) < n and not pq.empty():
+        weight, node, parent = pq.get()
+        if node not in mstSet:
+            mstSet.add(node)
+            mst.append([weight, parent, node])
+            for neighbor in graph[node]:
+                if neighbor not in mstSet:
+                    pq.put((graph[node][neighbor], neighbor, node))
+    mst.sort()
+    return mst[1:]
+
+graph = {6: {7: 1, 5: 2, 8: 6}, 7: {6: 1, 8: 7, 0: 8, 1: 11}, 2: {8: 2, 5: 4, 3: 7, 1: 8}, 8: {2: 2, 6: 6, 7: 7}, 5: {6: 2, 2: 4, 4: 10, 3: 14}, 0: {1: 4, 7: 8}, 1: {0: 4, 2: 8, 7: 11}, 3: {2: 7, 4: 9, 5: 14}, 4: {3: 9, 5: 10}}
+
+# Note: the graph and edges in both the examples represent the same graph but will yield different answers as one graph can have multiple MSTs
+print(prims(graph, 9))
