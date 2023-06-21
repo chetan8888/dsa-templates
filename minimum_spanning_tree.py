@@ -69,46 +69,39 @@ print(find_mst(edges,9))
 # 3. Keep picking edges from priority queue and if the edge picked is not in mstSet, add it to mstSet and add all its adjacent edges to the priority queue.
 # 4. Repeat step#3 until there are (V-1) edges in the spanning tree.
 
-# Graph = {
-#     0: {
-#         1: 3,
-#         4: 5
-#     },
-#     1: {
-#         ...
-#     }
+# graph = {
+#     1: [(3,2),(5,3)],
+#     2: [(3,1),(1,3),(6,4),(5,5)],
 # }
+# 1 has 2 neighbors, 2 and 3, with weights 3 and 5 respectively
 
-# 0 has 2 neighbors, 1 and 4, with weights 3 and 5 respectively
-
-import math
-from queue import PriorityQueue
+from heapq import heappop, heappush
 def prims(graph, n):
-    vertexWeight = [math.inf for i in range(n)]
-    vertexWeight[0] = 0
+    totalCost = 0
+
     mst = []
     visited = set()
 
-    pq = PriorityQueue()
-    pq.put((0,0,0))
+    h = [(0,0,0)]
 
-    while not pq.empty():
-        weight, vertex, parent = pq.get()
+    while h and len(visited) < n:
+        weight, vertex, parent = heappop(h)
         if vertex not in visited:
+            totalCost += weight
             visited.add(vertex)
-            mst.append([weight,vertex,parent])
-            for neighbor in graph[vertex]:
+            mst.append([weight, parent, vertex])
+            for nw, neighbor in graph[vertex]:
                 if neighbor not in visited:
-                    if vertexWeight[neighbor] > graph[vertex][neighbor]:
-                        vertexWeight[neighbor] = graph[vertex][neighbor]
-                        pq.put((vertexWeight[neighbor], neighbor, vertex))
+                    heappush(h, (nw, neighbor, vertex))
     mst = mst[1:]
     if len(mst) != n-1:
         print("Graph is not connected")
     mst.sort()
     return mst
 
-graph = {6: {7: 1, 5: 2, 8: 6}, 7: {6: 1, 8: 7, 0: 8, 1: 11}, 2: {8: 2, 5: 4, 3: 7, 1: 8}, 8: {2: 2, 6: 6, 7: 7}, 5: {6: 2, 2: 4, 4: 10, 3: 14}, 0: {1: 4, 7: 8}, 1: {0: 4, 2: 8, 7: 11}, 3: {2: 7, 4: 9, 5: 14}, 4: {3: 9, 5: 10}}
+graph = {0: [[4, 1], [8, 7]], 1: [[4, 0], [8, 2], [11, 7]], 2: [[2, 8], [4, 5], [7, 3], [8, 1]], 3: [[7, 2], [9, 4], [14, 5]], 4: [[9, 3], [10, 5]], 5: [[2, 6], [4, 2], [10, 4], [14, 3]], 6: [[1, 7], [2, 5], [6, 8]], 7: [[1, 6], [7, 8], [8, 0], [11, 1]], 8: [[2, 2], [6, 6], [7, 7]]}
+
 print(prims(graph,9))
+
 
 
