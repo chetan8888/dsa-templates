@@ -78,25 +78,31 @@ print(find_mst(edges,9))
 
 # 0 has 2 neighbors, 1 and 4, with weights 3 and 5 respectively
 
+import math
 from queue import PriorityQueue
 def prims(graph, n):
-    mstSet = set()
-    pq = PriorityQueue()
-    pq.put((0, 0, 0))
+    vertexWeight = [math.inf for i in range(n)]
+    vertexWeight[0] = 0
     mst = []
+    visited = set()
 
-    while len(mst) < n and not pq.empty():
-        weight, node, parent = pq.get()
-        if node not in mstSet:
-            mstSet.add(node)
-            mst.append([weight, parent, node])
-            for neighbor in graph[node]:
-                if neighbor not in mstSet:
-                    pq.put((graph[node][neighbor], neighbor, node))
+    pq = PriorityQueue()
+    pq.put((0,0,0))
+
+    while not pq.empty():
+        weight, vertex, parent = pq.get()
+        if vertex not in visited:
+            visited.add(vertex)
+            mst.append([weight,vertex,parent])
+            for neighbor in graph[vertex]:
+                if neighbor not in visited:
+                    if vertexWeight[neighbor] > graph[vertex][neighbor]:
+                        vertexWeight[neighbor] = graph[vertex][neighbor]
+                        pq.put((vertexWeight[neighbor], neighbor, vertex))
     mst.sort()
     return mst[1:]
 
 graph = {6: {7: 1, 5: 2, 8: 6}, 7: {6: 1, 8: 7, 0: 8, 1: 11}, 2: {8: 2, 5: 4, 3: 7, 1: 8}, 8: {2: 2, 6: 6, 7: 7}, 5: {6: 2, 2: 4, 4: 10, 3: 14}, 0: {1: 4, 7: 8}, 1: {0: 4, 2: 8, 7: 11}, 3: {2: 7, 4: 9, 5: 14}, 4: {3: 9, 5: 10}}
+print(prims(graph,9))
 
-# Note: the graph and edges in both the examples represent the same graph but will yield different answers as one graph can have multiple MSTs
-print(prims(graph, 9))
+
