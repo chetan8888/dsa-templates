@@ -43,6 +43,9 @@ def find_mst(edges,n):
             if find_parent(a,parent) != find_parent(b,parent):
                 union(a,b,rank,parent)
                 mst.append([weight,a,b])
+    # A Spanning Tree with n vertices will always have n-1 edges.
+    if len(mst) != n-1:
+        print("Graph is not connected")
     return mst
 
 edges = {}
@@ -99,8 +102,11 @@ def prims(graph, n):
                     if vertexWeight[neighbor] > graph[vertex][neighbor]:
                         vertexWeight[neighbor] = graph[vertex][neighbor]
                         pq.put((vertexWeight[neighbor], neighbor, vertex))
+    mst = mst[1:]
+    if len(mst) != n-1:
+        print("Graph is not connected")
     mst.sort()
-    return mst[1:]
+    return mst
 
 graph = {6: {7: 1, 5: 2, 8: 6}, 7: {6: 1, 8: 7, 0: 8, 1: 11}, 2: {8: 2, 5: 4, 3: 7, 1: 8}, 8: {2: 2, 6: 6, 7: 7}, 5: {6: 2, 2: 4, 4: 10, 3: 14}, 0: {1: 4, 7: 8}, 1: {0: 4, 2: 8, 7: 11}, 3: {2: 7, 4: 9, 5: 14}, 4: {3: 9, 5: 10}}
 print(prims(graph,9))
