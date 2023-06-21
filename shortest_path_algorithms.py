@@ -12,6 +12,8 @@ import math
 # Djikstra works only for positive edges. For negative edges use Bellman Ford
 # O((V+E)logV)
 
+# Leetcode Questions: https://leetcode.com/list/53js48ke/
+
 def djikstra(graph,source,target,n):
     dist = [9999999 for i in range(n)]
     pq = PriorityQueue()
@@ -41,11 +43,13 @@ print(djikstra(graph,0,3,4))
 
 # The idea is, assuming that there is no negative weight cycle if we have calculated shortest paths with at most i edges, then an iteration over all edges guarantees to give the shortest path with at-most (i+1) edges. Dynamic Programming Optimum Substructure property.
 
+# Leetcode Questions: https://leetcode.com/problems/cheapest-flights-within-k-stops/description/
+
 def bellmanFord(edges, n, source):
     dist = [math.inf for i in range(n)]
     dist[source] = 0
 
-    # There can be maximum |V| – 1 edges in any simple path, that is why the outer loop runs |v| – 1 times. 
+    # There can be maximum |V| – 1 edges in any simple path, that is why the outer loop runs |V| – 1 times. 
     for i in range(n-1):
         for u,v,w in edges:
             dist[v] = min(dist[v], dist[u]+w)
@@ -75,6 +79,8 @@ print(bellmanFord(edges,5,0))
 # https://www.youtube.com/watch?v=4NQ3HnhyNfQ&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=21&ab_channel=WilliamFiset
 # https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/
 # Dynamic Programming, Optimum Substructure. Taking each vertext as an intermediate vertex, we can find shortest path between any two vertices. If the optimum path between i and j contains a vertex k, then this optimum path is the combination of optimum path from i to k and optimum path from k to j.
+
+# Leetcode Question: https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/description/
 
 def floydMarshall(graph):
     n = len(graph)

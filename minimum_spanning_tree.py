@@ -1,3 +1,4 @@
+# Leetcode Questions: https://leetcode.com/tag/minimum-spanning-tree/
 
 # edges => 3:[[0,1],[3,2]] 5:[[1,2]] there are three edges, two of weight 3 between 0,1 and 2,3 and one of 5 between 1,2
 # returns an array [[a,b,c],[d,e,f]] where a is edge weight between b,c
