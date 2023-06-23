@@ -8,13 +8,18 @@ def kmp(text, pattern):
     lps = [0 for i in range(m)]
 
     def computeLPS(pattern):
-        for i in range(1,m):
-            if lps[i-1] != 0:
-                if pattern[i] == pattern[lps[i-1]]:
-                    lps[i] = lps[i-1]+1
+        len = 0
+        i = 1
+        while i < m:
+            if pattern[i] == pattern[len]:
+                len += 1
+                lps[i] = len
+                i += 1
             else:
-                if pattern[i] == pattern[0]:
-                    lps[i] = 1
+                if len == 0:
+                    i += 1
+                else:
+                    len = lps[len-1]
     computeLPS(pattern)
     print(lps)
 
@@ -34,5 +39,6 @@ def kmp(text, pattern):
                 j = lps[j-1]
     return index
 
-print(kmp("abcabababa", "aba"))
+# print(kmp("abcabababa", "aba"))
+print(kmp("abca", "abcaba"))
 
