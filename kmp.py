@@ -8,18 +8,18 @@ def kmp(text, pattern):
     lps = [0 for i in range(m)]
 
     def computeLPS(pattern):
-        len = 0
+        length = 0
         i = 1
         while i < m:
-            if pattern[i] == pattern[len]:
-                len += 1
-                lps[i] = len
+            if pattern[i] == pattern[length]:
+                length += 1
+                lps[i] = length
                 i += 1
             else:
-                if len == 0:
+                if length == 0:
                     i += 1
                 else:
-                    len = lps[len-1]
+                    length = lps[length-1]
     computeLPS(pattern)
     print(lps)
 
