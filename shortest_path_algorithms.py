@@ -21,11 +21,12 @@ def djikstra(graph,source,target,n):
     pq.put((0,source))
 
     while not pq.empty():
-        cn = pq.get()[1]
-        for neighbor in graph[cn]:
-            if dist[neighbor[0]] > dist[cn] + neighbor[1]:
-                dist[neighbor[0]] = dist[cn] + neighbor[1]
-                pq.put((dist[neighbor[0]],neighbor[0]))
+        currDist, currNode = pq.get()
+        if dist[currNode] >= currDist:
+            for neighbor in graph[currNode]:
+                if dist[neighbor[0]] > dist[currNode] + neighbor[1]:
+                    dist[neighbor[0]] = dist[currNode] + neighbor[1]
+                    pq.put((dist[neighbor[0]],neighbor[0]))
     return dist[target]
 
 graph = {}
@@ -51,14 +52,19 @@ def bellmanFord(edges, n, source):
 
     # There can be maximum |V| – 1 edges in any simple path, that is why the outer loop runs |V| – 1 times. 
     for i in range(n-1):
+        update = False
         for u,v,w in edges:
-            dist[v] = min(dist[v], dist[u]+w)
+            if dist[v] > dist[u]+w:
+                dist[v] = dist[u]+w
+                update = True
+        if not update:
+            break
     
     # To detect a negative cycle, simply check if an additional iteration of outer loop does any update or not. If we get a shorter path, then there is a negative cycle.
     for u,v,w in edges:
         if dist[v] < dist[u]+w:
             print("Graph Contains Negative Cycle")
-            break
+            return -1
     return dist
 
 edges = []
