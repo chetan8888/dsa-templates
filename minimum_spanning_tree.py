@@ -33,7 +33,7 @@ def find_mst(edges,n):
     weights = []
     for k in edges:
         weights.append(k)
-    # [[]]
+
     weights.sort()
 
     rank = [0 for i in range(n)]

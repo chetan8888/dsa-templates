@@ -3,7 +3,7 @@ import math
 
 # For DAG use simple BFS to find shortest distance (O(V+E))
 
-# Djikstra Algorithm (O((V+E)logV)).
+# Ddstikstra Algorithm (O((V+E)logV)).
 # finds shortest path from source to all other nodes
 # Practical Uses: Network Routing Protocols, Biology (spread of viruses among humans)
 
@@ -98,10 +98,16 @@ def floydMarshall(graph):
         for j in graph[i]:
             dist[i][j] = graph[i][j]
 
-    for k in range(n):
-        for i in range(n):
-            for j in range(n):
-                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+    for intermediateVertex in range(n):
+        for src in range(n):
+            for dst in range(n):
+                dist[src][dst] = min(dist[src][dst], dist[src][intermediateVertex] + dist[intermediateVertex][dst])
+
+    for i in range(n):
+        if (dist[i][i] < 0):
+            print("Graph contains negative weight cycle")
+            return -1
+        
     return dist
 
 graph = {}
