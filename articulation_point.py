@@ -2,10 +2,6 @@
 # This algorithm is based on the DFS tree of the graph
 # The DFS tree is a tree that is formed by DFS traversal of the graph
 
-# The DFS tree has the following properties:
-# 2. A node is an articulation point if it is the root of the DFS tree and has at least two children
-# 3. A node is an articulation point if it is not the root of the DFS tree and it has a child that has no back edge to any of its ancestor
-
 # The algorithm is as follows:
 # 1. Do a DFS traversal of the graph
 # 2. For each node, keep track of the order in which it is visited

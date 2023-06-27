@@ -13,12 +13,8 @@ def find_hamilton_cycles(graph):
         for neighbor in graph[node]:
             if neighbor not in visited:
                 visited.add(neighbor)
-                path.append(neighbor)
-
-                hamilton_cycle_util(start, neighbor, visited, path[:])
-
-                visited.discard(neighbor)
-                path.pop()        
+                hamilton_cycle_util(start, neighbor, visited, path + [neighbor])
+                visited.discard(neighbor)  
 
 
     hamilton_cycle_util(0, 0, {0}, [0])
@@ -31,6 +27,8 @@ def find_hamilton_cycles(graph):
 # graph[2] = set([1,4])
 # graph[3] = set([0,1,4])
 # graph[4] = set([1,2,3])
+
+# Leetcode: 
 
 graph = {}
 graph[0] = set([1,2,5])
