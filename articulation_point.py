@@ -22,42 +22,38 @@ def articulationPoint(graph):
     lowestReachable = [inf for node in range(n)]
     visited = [False for node in range(n)]
     orderNum = 0
-    rootHasTwoChildren = False
-    articulationPoints = []
+    articulationPoints = set()
+    rootChildren = 0
 
     def dfs(node):
-        nonlocal orderNum, rootHasTwoChildren
-        if node >= n:
-            return
+        nonlocal orderNum, rootChildren
         
         dfsVisitOrder[node] = orderNum
         orderNum += 1
         visited[node] = True
         minReachable = dfsVisitOrder[node]
-        children = set()
 
         for neighbor in graph[node]:
             minReachable = min(minReachable, dfsVisitOrder[neighbor])
-            if not visited[neighbor]:
-                children.add(neighbor)
-                minReachable = min(minReachable, dfs(neighbor))
-        
-        # Root node is an articulation point if it has at least two children
-        if node == 0:
-            if len(children) >= 2:
-                # rootHasTwoChildren = True
-                articulationPoints.append(node)
-        else:
-            # For each node, if one of its children has no back edge to any of its ancestor, then that node is an articulation point
-            for child in children:
-                if lowestReachable[child] >= dfsVisitOrder[node]:
-                    articulationPoints.append(node)
-                    break
+            if not visited[neighbor]:                
+                currMinReachable = dfs(neighbor)
+                minReachable = min(minReachable, currMinReachable)
+
+                # Root Node Articulation Point Check
+                if node == 0:
+                    rootChildren += 1
+                # Non Root Node Articulation Point Check
+                else:
+                    # For each node, if one of its children has no back edge to any of its ancestor, then that node is an articulation point
+                    if lowestReachable[neighbor] >= dfsVisitOrder[node]:
+                        articulationPoints.add(node)
 
         lowestReachable[node] = minReachable
         return lowestReachable[node]
 
     dfs(0)
+    if rootChildren >= 2:
+        articulationPoints.add(0)
     return articulationPoints
 
 graph = {}

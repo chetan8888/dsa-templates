@@ -2,7 +2,7 @@ def find_hamilton_cycles(graph):
     n = len(graph)
     hamiltonCycles = []
 
-    def hamilton_cycle_util(start,node,visited,path):
+    def dfs(start,node,visited,path):
         nonlocal hamiltonCycles
 
         if len(path) == n and start in graph[node]:
@@ -13,11 +13,11 @@ def find_hamilton_cycles(graph):
         for neighbor in graph[node]:
             if neighbor not in visited:
                 visited.add(neighbor)
-                hamilton_cycle_util(start, neighbor, visited, path + [neighbor])
+                dfs(start, neighbor, visited, path + [neighbor])
                 visited.discard(neighbor)  
 
 
-    hamilton_cycle_util(0, 0, {0}, [0])
+    dfs(0, 0, {0}, [0])
     
     return hamiltonCycles
 
