@@ -18,7 +18,7 @@ from math import inf
 
 def articulationPoint(graph):
     n = len(graph)
-    dfsVisitOrder = [-1 for node in range(n)]
+    dfsVisitOrder = [inf for node in range(n)]
     lowestReachable = [inf for node in range(n)]
     visited = [False for node in range(n)]
     orderNum = 0
@@ -33,11 +33,11 @@ def articulationPoint(graph):
         dfsVisitOrder[node] = orderNum
         orderNum += 1
         visited[node] = True
-        minReachable = node
+        minReachable = dfsVisitOrder[node]
         children = set()
 
         for neighbor in graph[node]:
-            minReachable = min(minReachable, neighbor)
+            minReachable = min(minReachable, dfsVisitOrder[neighbor])
             if not visited[neighbor]:
                 children.add(neighbor)
                 minReachable = min(minReachable, dfs(neighbor))
@@ -55,7 +55,7 @@ def articulationPoint(graph):
                     break
 
         lowestReachable[node] = minReachable
-        return minReachable
+        return lowestReachable[node]
 
     dfs(0)
     return articulationPoints
