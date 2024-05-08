@@ -3,6 +3,8 @@
 def find(parent,x):
     if parent[x] == x:
         return x
+    # for Path compression reassign the parent returne by downstream find call
+    # parent[x] = find(parent[x])
     return find(parent,parent[x])
 
 def union(parent,a,b):
